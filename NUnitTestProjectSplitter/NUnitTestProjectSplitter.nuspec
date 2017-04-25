@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<licenseUrl>https://raw.githubusercontent.com/Brightspace/NUnitTestProjectSplitter/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/Brightspace/NUnitTestProjectSplitter</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<copyright>Copyright 2017</copyright>
+		<tags>nunit categories</tags>
+	</metadata>
+	<files>
+		<file src="bin\$configuration$\*.*" target="tools" />
+	</files>
+</package>

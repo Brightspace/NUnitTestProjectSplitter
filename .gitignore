@@ -1,0 +1,11 @@
+bin/
+obj/
+packages/
+test-assemblies/
+.vs/
+*.exe
+*.dll
+*.suo
+*.user
+_ReSharper.*
+*.DotSettings
