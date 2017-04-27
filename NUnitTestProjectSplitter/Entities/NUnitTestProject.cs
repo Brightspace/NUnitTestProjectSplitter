@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NUnitTestProjectSplitter.Scanner {
+namespace NUnitTestProjectSplitter.Entities {
 
 	public sealed partial class NUnitTestProject {
 
 		public string ActiveConfig { get; private set; }
 
-		public IDictionary<string, List<string>> Configs { get; } 
+		public IDictionary<string, List<string>> Assemblies { get; } 
 			= new SortedDictionary<string, List<string>>( StringComparer.InvariantCultureIgnoreCase );
 
 		public NUnitTestProject( string activeConfig = null ) {
@@ -16,17 +16,17 @@ namespace NUnitTestProjectSplitter.Scanner {
 		
 		internal void Add(
 			string configName,
-			string assemblyPath
+			string assemblyFileName
 		) {
 
-			List<string> assemblies;
-			if( !Configs.TryGetValue( configName, out assemblies ) ) {
+			List<string> configs;
+			if( !Assemblies.TryGetValue( assemblyFileName, out configs ) ) {
 
-				assemblies = new List<string>();
-				Configs.Add( configName, assemblies );
+				configs = new List<string>();
+				Assemblies.Add( assemblyFileName, configs );
 			}
 
-			assemblies.Add( assemblyPath );
+			configs.Add( configName );
 		}
 	}
 }

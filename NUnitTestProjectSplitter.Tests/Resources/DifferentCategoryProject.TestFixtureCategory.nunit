@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NUnitProject>
+  <Settings activeconfig="D2L" />
+  <Config name="D2L" binpathtype="Auto">
+    <assembly path="DifferentCategoryProject.Tests.dll" />
+  </Config>
+</NUnitProject>

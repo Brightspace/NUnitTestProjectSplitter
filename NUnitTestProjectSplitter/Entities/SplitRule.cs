@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NUnitTestProjectSplitter.Splitter {
+namespace NUnitTestProjectSplitter.Entities {
 
 	public class SplitRule {
 

@@ -37,7 +37,7 @@ namespace NUnitTestProjectSplitter.Helpers {
 			writer.Indent++;
 
 			int ident = m_stopwatches.Keys.Max( actionName => actionName.Length );
-			foreach( var stopWatch in m_stopwatches ) {
+			foreach( var stopWatch in m_stopwatches.OrderBy( x=>x.Key ) ) {
 				writer.WriteLine( $"{stopWatch.Key.PadRight( ident )} : {TimeSpan.FromMilliseconds( stopWatch.Value )}" );
 			}
 

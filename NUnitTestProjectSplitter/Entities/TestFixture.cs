@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using NUnitTestProjectSplitter.Helpers;
 
-namespace NUnitTestProjectSplitter.Scanner {
+namespace NUnitTestProjectSplitter.Entities {
 
 	public sealed class TestFixture {
 

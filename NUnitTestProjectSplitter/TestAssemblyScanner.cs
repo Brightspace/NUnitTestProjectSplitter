@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using NUnitTestProjectSplitter.Entities;
 using NUnitTestProjectSplitter.Helpers;
-using NUnitTestProjectSplitter.Splitter;
 
 namespace NUnitTestProjectSplitter.Scanner {
 
@@ -13,21 +13,22 @@ namespace NUnitTestProjectSplitter.Scanner {
 		public IEnumerable<SplitRule> Scan( Assembly assembly, IList<SplitRule> splitRules ) {
 			ISet<SplitRule> appliedRules = new HashSet<SplitRule>();
 
-			var sw = new DebugStopwatch( "2.GetAssemblyCategories" );
+			var sw = new DebugStopwatch( "3.GetAssemblyCategories" );
 			List<string> assemblyCategories = assembly
-				.GetCustomAttributes<CategoryAttribute>()
+				.GetCustomAttributes(typeof( CategoryAttribute ) )
+				.OfType<CategoryAttribute>()
 				.Select( attr => attr.Name )
 				.ToList();
 			sw.Dispose();
 
-			sw = new DebugStopwatch( "3.LoadTestFixturs" );
+			sw = new DebugStopwatch( "4.LoadTestFixturs" );
 			List<TestFixture> fixtures = assembly.GetTypes()
 				.Select( LoadTestFixtureOrNull )
 				.Where( f => f != null )
 				.ToList();
 			sw.Dispose();
 
-			using( new DebugStopwatch( "4.SplitRules.Check" ) ) {
+			using( new DebugStopwatch( "5.SplitRules.Check" ) ) {
 				foreach( var fixture in fixtures ) {
 
 					foreach( var method in fixture.TestMethods ) {

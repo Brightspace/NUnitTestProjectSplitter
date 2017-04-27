@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace NUnitTestProjectSplitter.Scanner {
+namespace NUnitTestProjectSplitter.Entities {
 
 	public sealed partial class NUnitTestProject {
 
@@ -16,8 +17,15 @@ namespace NUnitTestProjectSplitter.Scanner {
 
 				xml.WriteStartElement( "NUnitProject" );
 
+				Dictionary<string, IEnumerable<string>> configs = Assemblies
+					// decompose
+					.SelectMany( assmblyItem => assmblyItem.Value.Select( configName => new KeyValuePair<string, string>( configName, assmblyItem.Key ) ) )
+					// group by config name
+					.GroupBy( x => x.Key )
+					.ToDictionary( x => x.Key, x => x.Select( assemblyItem => assemblyItem.Value ) );
+					
 				if( !String.IsNullOrEmpty( ActiveConfig ) ) {
-					if( Configs.ContainsKey( ActiveConfig ) ) {
+					if( configs.ContainsKey( ActiveConfig ) ) {
 
 						xml.WriteStartElement( "Settings" );
 						xml.WriteAttributeString( "activeconfig", ActiveConfig );
@@ -25,13 +33,13 @@ namespace NUnitTestProjectSplitter.Scanner {
 					}
 				}
 
-				foreach( KeyValuePair<string, List<string>> config in Configs ) {
+				foreach( var config in configs ) {
 
 					xml.WriteStartElement( "Config" );
 					xml.WriteAttributeString( "name", config.Key );
 					xml.WriteAttributeString( "binpathtype", "Auto" );
 					{
-						List<string> assemblies = config.Value;
+						var assemblies = config.Value.ToList();
 						assemblies.Sort( StringComparer.OrdinalIgnoreCase );
 
 						foreach( string assembly in assemblies ) {

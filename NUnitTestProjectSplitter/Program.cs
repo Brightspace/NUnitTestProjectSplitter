@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NDesk.Options;
-using NUnit.Framework;
+using NUnitTestProjectSplitter.Entities;
 using NUnitTestProjectSplitter.Helpers;
 using NUnitTestProjectSplitter.Scanner;
-using NUnitTestProjectSplitter.Splitter;
+using NUnitTestProject = NUnitTestProjectSplitter.Entities.NUnitTestProject;
 
 namespace NUnitTestProjectSplitter {
 
@@ -23,13 +23,6 @@ namespace NUnitTestProjectSplitter {
 			public string InputNUnitProject = "NUnitTestProjects.nunit";
 
 			public readonly IList<SplitRule> SplitRules = new List<SplitRule>();
-			////TODO: get from config
-			//new SplitRule( "UnitTestProjects.nunit", new HashSet<string>() {"Unit"}, new HashSet<string>()  ),
-			//new SplitRule( "ParallelTestProject.nunit", new HashSet<string>() {"Integration"}, new HashSet<string>() { "Isolated" }  ),
-			//new SplitRule( "IsolatedTestProject.nunit", new HashSet<string>() { "Integration", "Isolated"}, new HashSet<string>()  ),
-			//new SplitRule( "ThirdPartyIntegrationTestProject.nunit", new HashSet<string>() {"ThirdPartyIntegration"}, new HashSet<string>()  ),
-			//new SplitRule( "SystemTestProject.nunit", new HashSet<string>() {"System"}, new HashSet<string>()  ),
-
 		}
 
 		private static readonly OptionSet<Arguments> m_argumentParser = new OptionSet<Arguments>()
@@ -148,11 +141,12 @@ namespace NUnitTestProjectSplitter {
 
 			string path = args.AssembliesPath.FullName;
 			SetupAssemblyResolver( path );
+			int processedAssemblies = 0;
 
-			Console.WriteLine( "Loading assemblies from '{0}'", path );
+			Console.WriteLine( "{0} Loading assemblies from '{1}'", DateTime.UtcNow, path );
 
-			var sw = new DebugStopwatch( "1.LoadAssemblies" );
-			
+			var sw = new DebugStopwatch( "1.Load NunitProject" );
+
 			TestAssemblyScanner scanner = new TestAssemblyScanner();
 			IDictionary<string, NUnitTestProject> outputProjects = new SortedDictionary<string, NUnitTestProject>();
 
@@ -163,99 +157,48 @@ namespace NUnitTestProjectSplitter {
 
 			var inputProject = NUnitTestProject.LoadFromFile( inputProjectPath );
 
-			foreach( var config in inputProject.Configs ) {
-				string configName = config.Key;
+			sw.Dispose();
 
-				foreach( var assemblyName in config.Value ) {
-					string assemblyPath = Path.Combine( args.AssembliesPath.FullName, assemblyName );
-					Assembly assembly = GetAssemblyOrNull( assemblyPath );
+			foreach( var assemblyItem in inputProject.Assemblies ) {
+				string assemblyName = assemblyItem.Key;
 
-					if( assembly != null ) {
-						var appliedRules = scanner.Scan( assembly, args.SplitRules );
+				sw = new DebugStopwatch( "2.Load Assembly" );
+				string assemblyPath = Path.Combine( args.AssembliesPath.FullName, assemblyName );
+				Assembly assembly = GetAssemblyOrNull( assemblyPath );
+				processedAssemblies++;
+				sw.Dispose();
 
-						foreach( var rule in appliedRules ) {
-							if( !outputProjects.ContainsKey( rule.TestProjectName ) ) {
-								outputProjects.Add( rule.TestProjectName, new NUnitTestProject( inputProject.ActiveConfig ) );
-							}
+				if( assembly != null ) {
+					IEnumerable<SplitRule> appliedRules = scanner.Scan( assembly, args.SplitRules );
 
+					foreach( var rule in appliedRules ) {
+						if( !outputProjects.ContainsKey( rule.TestProjectName ) ) {
+							outputProjects.Add( rule.TestProjectName, new NUnitTestProject( inputProject.ActiveConfig ) );
+						}
+
+						foreach( var configName in assemblyItem.Value ) {
 							outputProjects[rule.TestProjectName].Add( configName, assemblyName );
 						}
 					}
 				}
 			}
 
-			foreach( var outputProject in outputProjects ) {
-				var outputProjectPath = Path.Combine( args.AssembliesPath.FullName, outputProject.Key );
-				outputProject.Value.Save( outputProjectPath );
+			using( new DebugStopwatch( "6.Save NunitProjects" ) ) {
+				foreach( var outputProject in outputProjects ) {
+					string outputProjectPath = Path.Combine( args.AssembliesPath.FullName, outputProject.Key );
+					outputProject.Value.Save( outputProjectPath );
+				}
 			}
-
-			sw.Dispose();
 
 			using( IndentedTextWriter writer = new IndentedTextWriter( Console.Error, "\t" ) ) {
 				DebugStopwatch.Report( writer );
 			}
 
+			Console.WriteLine( "{0} NUnitTestProjectSplitter finished. processed {1} assemblies", DateTime.UtcNow, processedAssemblies );
+			
 			return 1;
 		}
-
-		//private static int Report(
-		//		TestAssembly assembly,
-		//		IndentedTextWriter writer
-		//	) {
-
-		//	int violations = 0;
-
-		//	if( assembly.Violations.Count > 0 ) {
-		//		writer.WriteLine( "Assembly: {0}", assembly.Name );
-		//		writer.Indent++;
-
-		//		foreach( string violation in assembly.Violations ) {
-		//			writer.WriteLine( violation );
-		//		}
-
-		//		writer.Indent--;
-
-		//		violations += assembly.Violations.Count;
-		//	}
-
-		//	foreach( TestFixture fixture in assembly.Fixtures ) {
-
-		//		if( fixture.Violations.Count > 0 ) {
-
-		//			if( violations == 0 ) {
-
-		//				writer.WriteLine( "Assembly: {0}", assembly.Name );
-		//				writer.WriteLine();
-		//				writer.Indent++;
-		//			}
-
-		//			writer.WriteLine( "Fixture: {0}", fixture.Name );
-		//			writer.WriteLine();
-		//			writer.Indent++;
-
-		//			foreach( TestViolation violation in fixture.Violations ) {
-
-		//				writer.WriteLine( "Test: {0}", violation.Name );
-		//				writer.Indent++;
-		//				writer.WriteLine( violation.Message );
-		//				writer.Indent--;
-		//				writer.WriteLine();
-		//			}
-
-		//			writer.Indent--;
-
-		//			violations += fixture.Violations.Count;
-		//		}
-		//	}
-
-		//	if( violations > 0 ) {
-		//		writer.Indent--;
-		//		writer.WriteLine();
-		//	}
-
-		//	return violations;
-		//}
-
+		
 		private static void SetupAssemblyResolver( string path ) {
 
 			AssemblyResolver resolver = new AssemblyResolver( path );

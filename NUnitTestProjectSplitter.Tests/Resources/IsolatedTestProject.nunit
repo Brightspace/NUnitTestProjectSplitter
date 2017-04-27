@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NUnitProject>
+  <Settings activeconfig="D2L" />
+  <Config name="D2L" binpathtype="Auto">
+    <assembly path="Project1.IsolatedTests.dll" />
+    <assembly path="Project1.Tests.dll" />
+  </Config>
+</NUnitProject>
