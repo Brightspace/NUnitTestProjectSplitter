@@ -6,7 +6,7 @@ using NUnit.Framework;
 using NUnitTestProjectSplitter.Entities;
 using NUnitTestProjectSplitter.Helpers;
 
-namespace NUnitTestProjectSplitter.Scanner {
+namespace NUnitTestProjectSplitter {
 
 	public sealed class TestAssemblyScanner {
 

@@ -14,7 +14,19 @@ namespace NUnitTestProjectSplitter.Helpers {
 		private readonly ConcurrentDictionary<string, Assembly> m_assemblies
 			= new ConcurrentDictionary<string, Assembly>( StringComparer.OrdinalIgnoreCase );
 
-		public AssemblyResolver( string path ) {
+		internal static void Setup( string path ) {
+
+			AssemblyResolver resolver = new AssemblyResolver( path );
+
+			AppDomain.CurrentDomain.AssemblyResolve +=
+				delegate ( object senderJunk, ResolveEventArgs args ) {
+
+					Assembly assemblyObj = resolver.Resolve( args.Name );
+					return assemblyObj;
+				};
+		}
+
+		private AssemblyResolver( string path ) {
 
 			DirectoryInfo bin = new DirectoryInfo( path );
 			if( !bin.Exists ) {

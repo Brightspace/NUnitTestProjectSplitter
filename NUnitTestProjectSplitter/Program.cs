@@ -7,14 +7,11 @@ using System.Reflection;
 using NDesk.Options;
 using NUnitTestProjectSplitter.Entities;
 using NUnitTestProjectSplitter.Helpers;
-using NUnitTestProjectSplitter.Scanner;
 using NUnitTestProject = NUnitTestProjectSplitter.Entities.NUnitTestProject;
 
 namespace NUnitTestProjectSplitter {
 
 	internal static class Program {
-
-		private static readonly char[] ArgumentsSeperator = new char[] { ',' };
 
 		private sealed class Arguments {
 
@@ -37,7 +34,7 @@ namespace NUnitTestProjectSplitter {
 				( args, v ) => { args.InputNUnitProject = v; }
 			).Add(
 				"splitRules=",
-				"Split rules in format: \"<nunit proj file>:<category to include>,!<category to exclude>;<nunit proj file>...\"",
+				"Split rules in format: \"<output nunit project file>:<category to include>,!<category to exclude>;<nunit proj file>...\"",
 				( args, v ) => {
 					foreach( var ruleAsText in v.Split( ';' )) {
 						var ruleParts = ruleAsText.Split( ':' );
@@ -140,10 +137,10 @@ namespace NUnitTestProjectSplitter {
 		private static int Run( Arguments args ) {
 
 			string path = args.AssembliesPath.FullName;
-			SetupAssemblyResolver( path );
+			AssemblyResolver.Setup( path );
 			int processedAssemblies = 0;
 
-			Console.WriteLine( "{0} Loading assemblies from '{1}'", DateTime.UtcNow, path );
+			Console.WriteLine( "Loading assemblies from '{0}'", path );
 
 			var sw = new DebugStopwatch( "1.Load NunitProject" );
 
@@ -194,23 +191,11 @@ namespace NUnitTestProjectSplitter {
 				DebugStopwatch.Report( writer );
 			}
 
-			Console.WriteLine( "{0} NUnitTestProjectSplitter finished. processed {1} assemblies", DateTime.UtcNow, processedAssemblies );
-			
+			Console.WriteLine( "NUnitTestProjectSplitter finished. Processed {0} assemblies", processedAssemblies );
+
 			return 1;
 		}
 		
-		private static void SetupAssemblyResolver( string path ) {
-
-			AssemblyResolver resolver = new AssemblyResolver( path );
-
-			AppDomain.CurrentDomain.AssemblyResolve +=
-				delegate ( object senderJunk, ResolveEventArgs args ) {
-
-					Assembly assemblyObj = resolver.Resolve( args.Name );
-					return assemblyObj;
-				};
-		}
-
 		private static Assembly GetAssemblyOrNull( string filePath ) {
 
 			string fileName = filePath;
