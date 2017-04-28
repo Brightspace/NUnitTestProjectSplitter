@@ -43,7 +43,7 @@ namespace NUnitTestProjectSplitter {
 
 						foreach( var splitRule in splitRules ) {
 							if( !appliedRules.Contains( splitRule )
-								&& splitRule.RequaredCategories.All( c => testCategories.Contains( c ) )
+								&& splitRule.RequiredCategories.All( c => testCategories.Contains( c ) )
 								&& splitRule.ProhibitedCategories.All( c => !testCategories.Contains( c ) ) ) {
 
 								appliedRules.Add( splitRule );

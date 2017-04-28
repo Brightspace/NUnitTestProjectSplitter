@@ -6,17 +6,17 @@ namespace NUnitTestProjectSplitter.Entities {
 
 		public SplitRule( 
 			string testProjectName, 
-			ISet<string> requaredCategories,
+			ISet<string> requiredCategories,
 			ISet<string> prohibitedCategories 
 		) {
 			TestProjectName = testProjectName;
-			RequaredCategories = requaredCategories;
+			RequiredCategories = requiredCategories;
 			ProhibitedCategories = prohibitedCategories;
 		}
 
 		public string TestProjectName { get; }
 
-		public ISet<string> RequaredCategories { get; }
+		public ISet<string> RequiredCategories { get; }
 
 		public ISet<string> ProhibitedCategories { get; }
 

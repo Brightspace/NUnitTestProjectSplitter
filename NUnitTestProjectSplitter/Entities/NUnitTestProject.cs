@@ -15,8 +15,8 @@ namespace NUnitTestProjectSplitter.Entities {
 		}
 		
 		internal void Add(
-			string configName,
-			string assemblyFileName
+			string assemblyFileName,
+			IEnumerable<string> configNames
 		) {
 
 			List<string> configs;
@@ -26,7 +26,7 @@ namespace NUnitTestProjectSplitter.Entities {
 				Assemblies.Add( assemblyFileName, configs );
 			}
 
-			configs.Add( configName );
+			configs.AddRange( configNames );
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace NUnitTestProjectSplitter.Entities {
 					// group by config name
 					.GroupBy( x => x.Key )
 					.ToDictionary( x => x.Key, x => x.Select( assemblyItem => assemblyItem.Value ) );
-					
+
 				if( !String.IsNullOrEmpty( ActiveConfig ) ) {
 					if( configs.ContainsKey( ActiveConfig ) ) {
 
@@ -72,7 +72,7 @@ namespace NUnitTestProjectSplitter.Entities {
 
 						foreach( var assemblyElement in configSectionElement.Elements( XName.Get( "assembly" ) ) ) {
 							string path = assemblyElement.Attribute( XName.Get( "path" ) )?.Value;
-							Add( configName, path );
+							Add( path, new[] { configName } );
 						}
 					}
 				}
@@ -80,6 +80,11 @@ namespace NUnitTestProjectSplitter.Entities {
 		}
 
 		public static NUnitTestProject LoadFromFile( string filePath ) {
+
+			if( !File.Exists( filePath ) ) {
+				throw new FileNotFoundException( filePath );
+			}
+
 			var proj = new NUnitTestProject();
 			proj.Load( filePath );
 			return proj;

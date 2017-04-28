@@ -26,6 +26,31 @@ namespace NUnitTestProjectSplitter.Helpers {
 				};
 		}
 
+		internal static Assembly GetAssemblyOrNull( string filePath ) {
+
+			string fileName = filePath;
+			try {
+				Assembly assembly = Assembly.LoadFile( fileName );
+				return assembly;
+
+			} catch( BadImageFormatException ) {
+				Console.Error.WriteLine( "Failed to load: {0}", fileName );
+
+			} catch( FileLoadException ) {
+				Console.Error.WriteLine( "Failed to load: {0}", fileName );
+
+			} catch( ReflectionTypeLoadException ) {
+				Console.Error.WriteLine( "Failed to load: {0}", fileName );
+
+			} catch( TypeLoadException ) {
+				Console.Error.WriteLine( "Failed to load: {0}", fileName );
+			} catch( FileNotFoundException ) {
+				Console.Error.WriteLine( "File not found: {0}", fileName );
+			}
+
+			return null;
+		}
+
 		private AssemblyResolver( string path ) {
 
 			DirectoryInfo bin = new DirectoryInfo( path );
