@@ -111,6 +111,7 @@ namespace NUnitTestProjectSplitter {
 			}
 
 			try {
+
 				return Run( args );
 
 			} catch( ReflectionTypeLoadException err ) {
@@ -123,14 +124,13 @@ namespace NUnitTestProjectSplitter {
 					Console.Error.WriteLine( loaderErr );
 					Console.Error.WriteLine();
 				}
-
 				return -101;
 
 			} catch( Exception err ) {
 				Console.Error.WriteLine( err );
 				return -100;
-			//} finally {
-			//	Console.ReadKey();
+				//} finally {
+				//	Console.ReadKey();
 			}
 
 
@@ -159,9 +159,10 @@ namespace NUnitTestProjectSplitter {
 			sw.Dispose();
 
 			int processedAssemblies = processor.Process(
-				assembliesPath,
 				inputProject,
-				args.SplitRules
+				args.SplitRules,
+				assembliesPath,
+				Path.GetDirectoryName( inputProjectPath )
 			);
 
 			Console.WriteLine( "NUnitTestProjectSplitter finished. Processed {0} assemblies", processedAssemblies );

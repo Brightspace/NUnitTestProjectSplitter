@@ -17,7 +17,12 @@ namespace NUnitTestProjectSplitter {
 			m_testAssemblyScanner = testAssemblyScanner;
 		}
 		
-		public int Process( string assembliesPath, NUnitTestProject inputProject, IList<SplitRule> rules ) {
+		public int Process(
+			NUnitTestProject inputProject,
+			IList<SplitRule> rules,
+			string assembliesPath,
+			string outputPath
+		) {
 			AssemblyResolver.Setup( assembliesPath );
 			int processedAssemblies = 0;
 
@@ -45,7 +50,7 @@ namespace NUnitTestProjectSplitter {
 
 			using( new DebugStopwatch( "6.Save NunitProjects" ) ) {
 				foreach( var outputProject in outputProjects.Where( proj => proj.Value.Assemblies.Any() ) ) {
-					string outputProjectPath = Path.Combine( assembliesPath, outputProject.Key );
+					string outputProjectPath = Path.Combine( outputPath, outputProject.Key );
 					outputProject.Value.Save( outputProjectPath );
 				}
 			}
