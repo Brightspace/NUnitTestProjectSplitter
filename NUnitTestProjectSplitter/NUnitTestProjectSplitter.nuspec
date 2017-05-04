@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>$id$</id>
-		<version>$version$</version>
-		<title>$title$</title>
-		<authors>$author$</authors>
-		<owners>$author$</owners>
+		<id>NUnitTestProjectSplitter</id>
+		<version>1.0.2</version>
+		<title>NUnitTestProjectSplitter</title>
+		<authors>D2L Corporation</authors>
+		<owners>D2L Corporation</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<licenseUrl>https://raw.githubusercontent.com/Brightspace/NUnitTestProjectSplitter/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/Brightspace/NUnitTestProjectSplitter</projectUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>$description$</description>
+		<description>Tool which splits NUnit test proj between categories used</description>
 		<copyright>Copyright 2017</copyright>
 		<tags>nunit categories</tags>
 	</metadata>

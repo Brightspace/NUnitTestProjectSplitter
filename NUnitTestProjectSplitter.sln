@@ -5,11 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTestProjectSplitter", "NUnitTestProjectSplitter\NUnitTestProjectSplitter.csproj", "{93A5E5DE-197F-415F-BC64-9552C5BF91F6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4D60702E-8274-43A5-971D-0342B96823B4}"
-	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTestProjectSplitter.Tests", "NUnitTestProjectSplitter.Tests\NUnitTestProjectSplitter.Tests.csproj", "{A20F0550-AA39-4E08-A9EC-8706ECA9713C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestAssemblies", "TestAssemblies", "{339B2A22-4F40-4E6B-8770-AEBAA75B2E7D}"

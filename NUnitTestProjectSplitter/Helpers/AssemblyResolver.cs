@@ -30,7 +30,7 @@ namespace NUnitTestProjectSplitter.Helpers {
 
 			string fileName = filePath;
 			try {
-				Assembly assembly = Assembly.LoadFile( fileName );
+				Assembly assembly = Assembly.UnsafeLoadFrom( fileName );
 				return assembly;
 
 			} catch( BadImageFormatException ) {

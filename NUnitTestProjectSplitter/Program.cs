@@ -131,6 +131,7 @@ namespace NUnitTestProjectSplitter {
 				return -100;
 			}
 
+
 		}
 
 		private static int Run( Arguments args ) {
@@ -142,7 +143,16 @@ namespace NUnitTestProjectSplitter {
 			Console.WriteLine( "Loading assemblies from '{0}'", assembliesPath );
 
 			var sw = new DebugStopwatch( "1.Load NunitProject" );
-			string inputProjectPath = Path.Combine( assembliesPath, args.InputNUnitProject );
+
+			string inputProjectPath = File.Exists( args.InputNUnitProject )
+				? args.InputNUnitProject
+				: Path.Combine( assembliesPath, args.InputNUnitProject );
+
+			if( !File.Exists( inputProjectPath ) ) {
+				Console.Error.WriteLine( $"File Not Found: {args.InputNUnitProject}" );
+				return -102;
+			}
+
 			NUnitTestProject inputProject = NUnitTestProject.LoadFromFile( inputProjectPath );
 			sw.Dispose();
 
@@ -153,7 +163,7 @@ namespace NUnitTestProjectSplitter {
 			);
 
 			Console.WriteLine( "NUnitTestProjectSplitter finished. Processed {0} assemblies", processedAssemblies );
-			return 1;
+			return 0;
 		}
 
 	}
