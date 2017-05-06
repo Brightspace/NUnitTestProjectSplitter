@@ -59,15 +59,8 @@ namespace NUnitTestProjectSplitter {
 
 		private TestFixture LoadTestFixtureOrNull( Type type ) {
 
-			TestFixtureAttribute[] testFixtureAttrs = type
+			IEnumerable<string> testFixtureCategoryNames = type
 				.GetCustomAttributes<TestFixtureAttribute>( true )
-				.ToArray();
-
-			if( !testFixtureAttrs.Any() ) {
-				return null;
-			}
-
-			IEnumerable<string> testFixtureCategoryNames = testFixtureAttrs
 				.Where( attr => attr.Category != null )
 				.SelectMany( attr => attr.Category.Split( ',' ) );
 
@@ -87,9 +80,10 @@ namespace NUnitTestProjectSplitter {
 			);
 
 			IList<MethodInfo> methods = type.GetMethods( bindingFlags ).Where( IsTestMethod ).ToList();
-			TestFixture fixture = new TestFixture( type, testFixtureCategories, methods );
 
-			return fixture;
+			return methods.Any()
+				? new TestFixture( type, testFixtureCategories, methods )
+				: null;
 		}
 
 		private static bool IsTestMethod( MethodInfo method ) {

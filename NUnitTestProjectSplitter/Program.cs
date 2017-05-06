@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -129,8 +128,8 @@ namespace NUnitTestProjectSplitter {
 			} catch( Exception err ) {
 				Console.Error.WriteLine( err );
 				return -100;
-				//} finally {
-				//	Console.ReadKey();
+			//} finally {
+			//	Console.ReadKey();
 			}
 
 
