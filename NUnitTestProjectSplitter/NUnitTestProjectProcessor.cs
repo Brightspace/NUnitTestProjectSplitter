@@ -38,7 +38,8 @@ namespace NUnitTestProjectSplitter {
 				Assembly assembly = AssemblyResolver.GetAssemblyOrNull( assemblyPath );
 				sw.Dispose();
 
-				if( assembly != null ) {
+				if( assembly != null && NUnitFrameworkReferenceChecker.ReferencesNUnitFramework( assembly ) ) {
+
 					IEnumerable<SplitRule> appliedRules = m_testAssemblyScanner.Scan( assembly, rules );
 
 					foreach( var rule in appliedRules ) {
