@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Helpers\AssemblyResolver.cs" />
     <Compile Include="Helpers\DebugStopwatch.cs" />
+    <Compile Include="NUnitFrameworkReferenceChecker.cs" />
     <Compile Include="NUnitTestProjectProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entities\SplitRule.cs" />
+    <Compile Include="UnexpectedNUnitVersionException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
