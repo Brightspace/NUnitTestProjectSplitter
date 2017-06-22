@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using NUnitTestProjectSplitter;
 
 namespace NUnitTestProjectSplitter.Tests {
 
@@ -9,12 +10,11 @@ namespace NUnitTestProjectSplitter.Tests {
 
 		private const string TestAssembliesDirectoryName = "TestAssemblies";
 
-		internal static string TestAssembliesPath => Path.Combine( TestContext.CurrentContext.TestDirectory, TestAssembliesDirectoryName );
+		internal static string TestAssembliesPath => Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\Tests\", TestAssembliesDirectoryName );
 
 		internal static int ExecuteNUnitTestProjectSplitter( params string[] rules ) {
-
-			//Assembly assembly = typeof( NUnitTestProjectSplitter.Program ).Assembly;
-			string path = Path.Combine( TestContext.CurrentContext.TestDirectory, "NUnitTestProjectSplitter.exe" );
+			
+			string path = Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\NUnitTestProjectSplitter\bin\Release\NUnitTestProjectSplitter.exe" );
 			Assembly assembly = Assembly.LoadFile( path );
 			
 			AppDomain appDomain = AppDomain.CreateDomain(
