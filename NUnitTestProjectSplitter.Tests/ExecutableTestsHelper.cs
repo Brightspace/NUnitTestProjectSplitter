@@ -10,12 +10,10 @@ namespace NUnitTestProjectSplitter.Tests {
 
 		private const string TestAssembliesDirectoryName = "TestAssemblies";
 
-		internal static string TestAssembliesPath => Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\Tests\"+ TestAssembliesDirectoryName );
+		internal static string TestAssembliesPath => Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\Tests\", TestAssembliesDirectoryName );
 
 		internal static int ExecuteNUnitTestProjectSplitter( params string[] rules ) {
-
-			//Assembly assembly = typeof( NUnitTestProjectSplitter.Program ).Assembly;
-			//string path = Path.Combine( TestContext.CurrentContext.TestDirectory, "NUnitTestProjectSplitter.exe" );
+			
 			string path = Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\NUnitTestProjectSplitter\bin\Release\NUnitTestProjectSplitter.exe" );
 			Assembly assembly = Assembly.LoadFile( path );
 			
