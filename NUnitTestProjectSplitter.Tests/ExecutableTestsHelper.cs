@@ -16,7 +16,7 @@ namespace NUnitTestProjectSplitter.Tests {
 
 			//Assembly assembly = typeof( NUnitTestProjectSplitter.Program ).Assembly;
 			//string path = Path.Combine( TestContext.CurrentContext.TestDirectory, "NUnitTestProjectSplitter.exe" );
-			string path = Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\NUnitTestProjectSplitter\bin\Debug\NUnitTestProjectSplitter.exe" );
+			string path = Path.Combine( TestContext.CurrentContext.TestDirectory, @"..\..\..\NUnitTestProjectSplitter\bin\Release\NUnitTestProjectSplitter.exe" );
 			Assembly assembly = Assembly.LoadFile( path );
 			
 			AppDomain appDomain = AppDomain.CreateDomain(
