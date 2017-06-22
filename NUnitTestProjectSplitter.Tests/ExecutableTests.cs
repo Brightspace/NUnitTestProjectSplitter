@@ -25,7 +25,7 @@ namespace NUnitTestProjectSplitter.Tests {
 				"DifferentCategoryProject.MultipleCategory.nunit:MultipleCategory1,MultipleCategory2"
 			);
 				
-			Assert.AreEqual( 1, result );
+			Assert.AreEqual( 0, result );
 
 			IDictionary<string, string> files = new[] {
 				"UnitTestProjects.nunit",
