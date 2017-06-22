@@ -21,4 +21,3 @@ build:
 
 test:
   assemblies:
-    - 'NUnitTestProjectSplitter.Tests.dll'
