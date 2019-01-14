@@ -1,7 +1,7 @@
-version: 1.0.5-{branch}-{build}
+version: 1.0.6-{branch}-{build}
 
 environment:
-  ASSEMBLY_FILE_VERSION: 1.0.5
+  ASSEMBLY_FILE_VERSION: 1.0.6
 
 nuget:
   project_feed: true
