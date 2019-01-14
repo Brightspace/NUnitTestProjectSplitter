@@ -14,17 +14,17 @@ namespace NUnitTestProjectSplitter.Entities {
 
 		public TestFixture( 
 			Type type,
-			IList<string> testFixtureCategories,
+			ISet<string> testFixtureCategories,
 			IList<MethodInfo> testMethods
 		) {
 			m_type = type;
-			TestFixtureCategories = new ReadOnlyCollection<string>( testFixtureCategories );
+            TestFixtureCategories = testFixtureCategories;
 			TestMethods = new ReadOnlyCollection<MethodInfo>( testMethods );
 		}
 
 		public string Name => m_typeNameFormatter.FormatFullName( m_type );
 
-		public IReadOnlyList<string> TestFixtureCategories { get;  }
+		public ISet<string> TestFixtureCategories { get;  }
 
 		public IReadOnlyList<MethodInfo> TestMethods { get; }
 
