@@ -21,6 +21,11 @@ namespace NUnitTestProjectSplitter {
             ISet<string> assemblyCategories = GetAssemblyCategories( assembly );
 			sw.Dispose();
 
+            if( splitRules.All( rule => rule.ProhibitedCategories.Any( c => assemblyCategories.Contains( c ) ) ) )
+            {
+                return appliedRules;
+            }
+
 			sw = new DebugStopwatch( "4.LoadTestFixturs" );
 			List<TestFixture> fixtures = assembly
                 .GetTypes()
@@ -46,6 +51,10 @@ namespace NUnitTestProjectSplitter {
 								appliedRules.Add( splitRule );
 							}
 						}
+
+                        if( appliedRules.Count == splitRules.Count ) {
+                            return appliedRules;
+                        }
 
 					}
 				}
